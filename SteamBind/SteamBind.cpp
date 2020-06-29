@@ -25,12 +25,12 @@ int main()
     DWORD dwFlags = CREATE_DEFAULT_ERROR_MODE | CREATE_SUSPENDED;
     SearchPathA(NULL, szExe, ".exe", ARRAYSIZE(szFullExe), szFullExe, &pszFileExe);
 
-    printf_s("Ready...");
-
+    // 콘솔을 감춥니다
     HWND hWnd = GetConsoleWindow();
     ShowWindow(hWnd, 0);
 
-    if (!DetourCreateProcessWithDllA(szFullExe[0] ? szFullExe : NULL, NULL,
+    // 특정 DLL을 주입한 상태로 프로세스를 실행합니다.
+    if (!DetourCreateProcessWithDllA(szFullExe[0] ? szFullExe : NULL, szCommand,
         NULL, NULL, TRUE, dwFlags, NULL, NULL,
         &si, &pi, "SteamClient.dll", NULL)) {
         DWORD dwError = GetLastError();
